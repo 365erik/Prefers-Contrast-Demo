@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<title>Prefers More Contrast</title>
+	<style>
+    /*
+    Demo UI styles.
+    */
+		.flex {
+			display: flex;
+		}
+
+    .container {
+			text-align: center;
+      max-width: 560px;
+      margin: 1em auto;
+		}
+
+    .forced-colors,
+		.prefers-contrast-more,
+		.prefers-light-scheme,
+		.prefers-dark-scheme {
+			display: none;
+		}
+
+    
+		.box {
+			width: 140px;
+			height: 140px;
+			background: blue;
+			font-size: 130px;
+			text-align: center;
+			color: hsl(208, 100%, 97.1%);
+		}
+
+		/*
+    Matches OS light mode and Windows High Contrast White
+    */
+		@media (prefers-color-scheme: light) {
+			.four {
+				background: purple;
+			}
+			.prefers-light-scheme {
+				display: inline;
+			}
+		}
+
+		/*
+    Matches OS dark mode and Windows High Contrast Dark
+    */
+		@media (prefers-color-scheme: dark) {
+			.four {
+				background: pink;
+			}
+			.prefers-dark-scheme {
+				display: inline;
+			}
+		}
+
+		/*
+    Enabling increased contrast mode in macOS accessbility preferences 
+    will match this media query and cause the browser to paint our boxes with 
+    blue text and give boxes one, two, and three yellow, orange, 
+    and red backgrounds, respectively. 
+
+    Windows high contrast mode also identifies the prefers-contrast
+    preference, but applies forced color adjustments that will reset text, anchor, and background colors to the user- or OS-defined high contrast theme.
+    */
+		@media (prefers-contrast: more) {
+      .box {
+        color: blue;
+      }
+			.one {
+				background: yellow;
+			}
+			.two {
+				background: orange;
+			}
+			.three {
+				background: red;
+			}
+			.prefers-contrast-more {
+				display: inline;
+			}
+		}
+
+		/*
+    We can query for Windows' forced colors mode, and disable them,
+    but do so sparingly. People using high contrast mode have set up their 
+    computer this way intentionally for reasons to which you may not be privy.
+    */
+		@media (forced-colors: active) {
+			.three,
+			.four {
+				forced-color-adjust: none;
+			}
+      /*
+      Re-enable forced colors on the inner span to
+      allow the OS to set the font color.
+      */
+      .four span {
+        forced-color-adjust: auto;
+      }
+      .forced-colors {
+        display: inline;
+      }
+		}
+	</style>
+</head>
+
+<body>
+	<div class="container">
+		<div class="flex">
+			<div class="box one"><span>1</span></div>
+			<div class="box two"><span>2</span></div>
+			<div class="box three"><span>3</span></div>
+			<div class="box four"><span>4</span></div>
+		</div>
+		<p>
+			<span class="forced-colors">Forced colors are active.</span>
+      <span class="prefers-contrast-more">Prefers more contrast.</span>
+      <span class="prefers-dark-scheme">Prefers dark scheme.</span>
+      <span class="prefers-light-scheme">Prefers light scheme.</span>
+    </p>
+</div>
+</body>
+
+</html>
